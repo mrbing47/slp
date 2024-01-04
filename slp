@@ -1,0 +1,52 @@
+# This command asks for root privileges required for pmset.
+# [ "$UID" -eq 0 ] || exec sudo "$0" "$@"
+
+# Storing the timer passed as an argument.
+timer="${1}"
+
+# Checking if the number of positional parameters ($#) is 0.
+if [[ "$#" == 0 ]]
+then
+	echo "Need an time interval for sleep."
+	exit 1
+# Checking if the number of positional parameters ($#) are more than 1.
+elif [[ "$#" > 1 ]]
+then
+	echo "Accepts only 1 argument"
+	exit 1
+# Checking if the $timer is all numbers.
+elif [[ "$timer" =~ ^[0-9]+$ ]]
+then
+	let seconds=$timer
+	unit='seconds'
+# Checking if the $timer has format for units.
+elif [[ "$timer" =~ ^[0-9]+[smh]$ ]]
+then
+	# Extracting the last character from $timer
+	requnit="${timer:0-1}"
+	# Extracting the string except the last character.
+	timer=${timer%?}
+
+	if [[ "$requnit" == "s" ]]
+	then
+		let seconds=$timer
+		unit='seconds'
+	elif [[ "$requnit" == "m" ]]
+	then
+		let seconds=$timer*60
+		unit='minutes'
+	elif [[ "$requnit" == "h" ]]
+	then
+		let seconds=$timer*3600
+		unit="hours"
+	fi
+else
+	echo "Invalid argument, must be a positive integer followed by optional s, m and h for seconds, minutes and hour respectively."
+	exit 1
+fi
+
+
+echo Sleeping after $timer $unit
+sleep $seconds && pmset sleepnow
+
+exit 0
