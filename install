@@ -69,7 +69,7 @@ curl --fail --location --progress-bar --output "$bin" "$latest_release_url" ||
 chmod +x "$bin" ||
     error 'Failed to set permissions on slp executable'
 
-success "Successfully installed slp"
+success "\nSuccessfully installed slp"
 
 tildify() {
     if [[ $1 = $HOME/* ]]; then
@@ -95,7 +95,7 @@ fish)
 
     if [[ -w $fish_config ]]; then
         {
-            echo -e '\n# slp'
+            echo -e '\n\n# slp'
 
             for command in "${commands[@]}"; do
                 echo "$command"
@@ -124,7 +124,7 @@ zsh)
 
     if [[ -w $zsh_config ]]; then
         {
-            echo -e '\n# slp'
+            echo -e '\n\n# slp'
 
             for command in "${commands[@]}"; do
                 echo "$command"
@@ -168,7 +168,7 @@ bash)
 
         if [[ -w $bash_config ]]; then
             {
-                echo -e '\n# slp'
+                echo -e '\n\n# slp'
 
                 for command in "${commands[@]}"; do
                     echo "$command"
