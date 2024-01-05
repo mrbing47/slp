@@ -25,7 +25,7 @@ if [[ -t 1 ]]; then
 fi
 
 error() {
-    echo "${Red}error${Color_Off}:" "$@" >&2
+    echo -e "${Red}error${Color_Off}:" "$@" >&2
     exit 1
 }
 
@@ -198,9 +198,12 @@ bash)
 esac
 
 echo
-info "To get started, run:"
-
 
 if [[ $refresh_command ]]; then
+    info "To get started, run:"
     info_bold "$refresh_command"
+else
+     info_bold "Restart the terminal to take effect"
 fi
+
+exit 0

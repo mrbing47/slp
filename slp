@@ -17,7 +17,7 @@ if [[ -t 1 ]]; then
 fi
 
 error() {
-    echo  "${Red}error${Color_Off}:" "$@" >&2
+    echo -e "${Red}error${Color_Off}:" "$@" >&2
     exit 1
 }
 
