@@ -4,6 +4,12 @@ This is a Mac OS X command to make the system after an integer amount of seconds
 
 The command only accepts an **integer** number followed by a unit of time denoted by `s`,`m` and `h`. If **no unit** of time is passed, it will use **second** as the **default** unit.
 
+## Install
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/mrbing47/slp/main/install.sh | bash
+```
+
 ## Usage
 
 ### Seconds (s)
@@ -29,7 +35,3 @@ $> slp 1h
 ```
 
 The above command will make the system after 60 minutes or 1 hour.
-
-## Install
-
-Add into PATH the path of the downloaded command in your shell's configuration file (eg, .zshrc, .bashrc etc).
