@@ -1,6 +1,8 @@
 # This command asks for root privileges required for pmset.
 # [ "$UID" -eq 0 ] || exec sudo "$0" "$@"
 
+
+
 # Storing the timer passed as an argument.
 timer="${1}"
 
