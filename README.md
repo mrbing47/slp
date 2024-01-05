@@ -7,7 +7,7 @@ The command only accepts an **integer** number followed by a unit of time denote
 ## Install
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/mrbing47/slp/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/mrbing47/slp/main/install | bash
 ```
 
 ## Usage
