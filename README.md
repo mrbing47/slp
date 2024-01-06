@@ -6,6 +6,10 @@ The command only accepts an **integer** number followed by a unit of time denote
 
 ## Install
 
+You must have `curl` installed on your system.
+
+In order to install, open **terminal** and copy and run the following command:
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/mrbing47/slp/main/install | bash
 ```
