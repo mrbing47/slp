@@ -41,11 +41,8 @@ success() {
     echo -e "${Green}$@ ${Color_Off}"
 }
 
-
-command -v sleep > /dev/null || error "Need to have sleep commend."
-command -v pmset > /dev/null || error "Need to have pmset commend."
-
-
+command -v sleep >/dev/null || error "Need to have sleep commend."
+command -v pmset >/dev/null || error "Need to have pmset commend."
 
 GITHUB=${GITHUB-"https://github.com"}
 
@@ -56,7 +53,6 @@ latest_release_url=$github_repo/releases/latest/download/slp
 install_dir=$HOME/.slp
 
 bin=$install_dir/slp
-
 
 if [[ ! -d $install_dir ]]; then
     mkdir -p "$install_dir" ||
@@ -203,7 +199,7 @@ if [[ $refresh_command ]]; then
     info "To get started, run:"
     info_bold "$refresh_command"
 else
-     info_bold "Restart the terminal to take effect"
+    info_bold "Restart the terminal to take effect"
 fi
 
 exit 0
