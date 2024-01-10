@@ -8,7 +8,6 @@ Dim='' # White
 
 # Bold
 Bold_White=''
-Bold_Green=''
 
 if [[ -t 1 ]]; then
     # Reset
@@ -20,8 +19,7 @@ if [[ -t 1 ]]; then
     Dim='\033[0;2m'    # White
 
     # Bold
-    Bold_Green='\033[1;32m' # Bold Green
-    Bold_White='\033[1m'    # Bold White
+    Bold_White='\033[1m' # Bold White
 fi
 
 error() {
@@ -30,15 +28,15 @@ error() {
 }
 
 info() {
-    echo -e "${Dim}$@ ${Color_Off}"
+    echo -e "${Dim}$* ${Color_Off}"
 }
 
 info_bold() {
-    echo -e "${Bold_White}$@ ${Color_Off}"
+    echo -e "${Bold_White}$* ${Color_Off}"
 }
 
 success() {
-    echo -e "${Green}$@ ${Color_Off}"
+    echo -e "${Green}$* ${Color_Off}"
 }
 
 command -v sleep >/dev/null || error "Need to have sleep commend."
