@@ -18,12 +18,12 @@ if [[ -t 1 ]]; then
 fi
 
 error() {
-	echo -e "${Red}error${Color_Off}:" "$@" >&2
+	echo -e "${Red}ERROR${Color_Off}:" "$@" >&2
 	exit 1
 }
 
 success() {
-	echo -e "${Green}$@ ${Color_Off}"
+	echo -e "${Green}$* ${Color_Off}"
 }
 
 # Storing the timer passed as an argument.
@@ -32,11 +32,9 @@ timer=$1
 # Checking if the number of positional parameters ($#) is 0.
 if [[ "$#" == 0 ]]; then
 	error "Need an time interval for sleep."
-	exit 1
 # Checking if the number of positional parameters ($#) are more than 1.
-elif [[ "$#" > 1 ]]; then
+elif [[ "$#" -gt 1 ]]; then
 	error "Accepts only 1 argument"
-	exit 1
 # Checking if the $timer is all numbers.
 elif [[ "$timer" =~ ^[0-9]+$ ]]; then
 	let seconds=$timer
@@ -60,10 +58,9 @@ elif [[ "$timer" =~ ^[0-9]+[smh]$ ]]; then
 	fi
 else
 	error "Invalid argument, must be a positive integer followed by optional s, m and h for seconds, minutes and hour respectively."
-	exit 1
 fi
 
-success Sleeping after $timer $unit
-sleep $seconds && pmset sleepnow
+success "Sleeping after $timer $unit"
+sleep "$seconds" && pmset sleepnow
 
 exit 0

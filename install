@@ -73,6 +73,18 @@ tildify() {
     fi
 }
 
+repeat() {
+    local start=1
+    local end=${1:-80}
+    local str="${2:-=}"
+    local range=$(seq "$start" "$end")
+
+    for _ in $range; do
+        echo -n "$str"
+    done
+    echo
+}
+
 echo
 
 case $(basename "$SHELL") in
@@ -87,11 +99,15 @@ fish)
 
     if [[ -w $fish_config ]]; then
         {
-            echo -e '\n\n# slp'
+            repeat 50 "#"
+            echo -e "##\tslp"
 
             for command in "${commands[@]}"; do
                 echo "$command"
             done
+
+            repeat 50 "#"
+            echo
         } >>"$fish_config"
 
         info "Added \"$(tildify $install_dir)\" to \$PATH in \"$tilde_fish_config\""
@@ -116,11 +132,15 @@ zsh)
 
     if [[ -w $zsh_config ]]; then
         {
-            echo -e '\n\n# slp'
+            repeat 50 "#"
+            echo -e "##\tslp"
 
             for command in "${commands[@]}"; do
                 echo "$command"
             done
+
+            repeat 50 "#"
+            echo
         } >>"$zsh_config"
 
         info "Added \"$(tildify $install_dir)\" to \$PATH in \"$tilde_zsh_config\""
@@ -160,11 +180,15 @@ bash)
 
         if [[ -w $bash_config ]]; then
             {
-                echo -e '\n\n# slp'
+                repeat 50 "#"
+                echo -e "##\tslp"
 
                 for command in "${commands[@]}"; do
                     echo "$command"
                 done
+
+                repeat 50 "#"
+                echo
             } >>"$bash_config"
 
             info "Added \"$(tildify $install_dir)\" to \$PATH in \"$tilde_bash_config\""
