@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Color Reset
+Color_Off=''
+
 # Regular Colors
 Red=''
 Green=''
-Dim='' # White
+Blue=''
 
 # Bold
 Bold_White=''
@@ -14,29 +17,51 @@ if [[ -t 1 ]]; then
     Color_Off='\033[0m' # Text Reset
 
     # Regular Colors
-    Red='\033[0;31m'   # Red
-    Green='\033[0;32m' # Green
-    Dim='\033[0;2m'    # White
+    Red='\033[0;31m'
+    Green='\033[0;32m'
+    Blue='\033[0;34m'
 
     # Bold
     Bold_White='\033[1m' # Bold White
 fi
 
 error() {
-    echo -e "${Red}error${Color_Off}:" "$@" >&2
+    echo -e "${Red}ERROR:${Color_Off}\t$*" >&2
     exit 1
 }
 
 info() {
-    echo -e "${Dim}$* ${Color_Off}"
+    echo -e "${Blue}INFO:${Color_Off}\t$*"
 }
 
-info_bold() {
-    echo -e "${Bold_White}$* ${Color_Off}"
+bold() {
+    echo -e "\t${Bold_White}$* ${Color_Off}"
 }
 
 success() {
-    echo -e "${Green}$* ${Color_Off}"
+    echo -e "${Green}\xE2\x9C\x94\t$* ${Color_Off}"
+}
+
+repeat() {
+    local start=1
+    local end=${1:-80}
+    local str="${2:-=}"
+    local range=$(seq "$start" "$end")
+
+    for _ in $range; do
+        echo -n "$str"
+    done
+    echo
+}
+
+tildify() {
+    if [[ $1 = $HOME/* ]]; then
+        local replacement=\~
+
+        echo "${1/$HOME/$replacement}"
+    else
+        echo "$1"
+    fi
 }
 
 command -v sleep >/dev/null || error "Need to have sleep commend."
@@ -53,37 +78,19 @@ if [[ ! -d $install_dir ]]; then
         error "Failed to create install directory \"$install_dir\""
 fi
 
-curl --fail --location --progress-bar --output "$bin" "$bin_url" ||
+info "Downloading the script"
+
+curl -fsL --output "$bin" "$bin_url" ||
     error "Failed to download slp from \"$bin_url\""
 
 chmod +x "$bin" ||
     error 'Failed to set permissions on slp executable'
 
-success "\nSuccessfully installed slp"
-
-tildify() {
-    if [[ $1 = $HOME/* ]]; then
-        local replacement=\~
-
-        echo "${1/$HOME/$replacement}"
-    else
-        echo "$1"
-    fi
-}
-
-repeat() {
-    local start=1
-    local end=${1:-80}
-    local str="${2:-=}"
-    local range=$(seq "$start" "$end")
-
-    for _ in $range; do
-        echo -n "$str"
-    done
-    echo
-}
+echo
+success "Successfully installed slp"
 
 echo
+info "Setting up the PATH"
 
 case $(basename "$SHELL") in
 fish)
@@ -108,14 +115,14 @@ fish)
             echo
         } >>"$fish_config"
 
-        info "Added \"$(tildify $install_dir)\" to \$PATH in \"$tilde_fish_config\""
+        info "Added \"$(tildify "$install_dir")\" to \$PATH in \"$tilde_fish_config\""
 
         refresh_command="source $tilde_fish_config"
     else
         echo "Manually add the directory to $tilde_fish_config (or similar):"
 
         for command in "${commands[@]}"; do
-            info_bold "  $command"
+            bold "  $command"
         done
     fi
     ;;
@@ -141,14 +148,14 @@ zsh)
             echo
         } >>"$zsh_config"
 
-        info "Added \"$(tildify $install_dir)\" to \$PATH in \"$tilde_zsh_config\""
+        info "Added \"$(tildify "$install_dir")\" to \$PATH in \"$tilde_zsh_config\""
 
         refresh_command="exec $SHELL"
     else
         echo "Manually add the directory to $tilde_zsh_config (or similar):"
 
         for command in "${commands[@]}"; do
-            info_bold "  $command"
+            bold "  $command"
         done
     fi
     ;;
@@ -189,7 +196,7 @@ bash)
                 echo
             } >>"$bash_config"
 
-            info "Added \"$(tildify $install_dir)\" to \$PATH in \"$tilde_bash_config\""
+            info "Added \"$(tildify "$install_dir")\" to \$PATH in \"$tilde_bash_config\""
 
             refresh_command="source $bash_config"
             set_manually=false
@@ -201,13 +208,13 @@ bash)
         echo "Manually add the directory to $tilde_bash_config (or similar):"
 
         for command in "${commands[@]}"; do
-            info_bold "  $command"
+            bold "  $command"
         done
     fi
     ;;
 *)
     echo 'Manually add the directory to ~/.bashrc (or similar):'
-    info_bold "  export PATH=\"$install_dir:\$PATH\""
+    bold "  export PATH=\"$install_dir:\$PATH\""
     ;;
 esac
 
@@ -215,9 +222,9 @@ echo
 
 if [[ $refresh_command ]]; then
     info "To get started, run:"
-    info_bold "$refresh_command"
+    bold "$refresh_command"
 else
-    info_bold "Restart the terminal to take effect"
+    bold "Restart the terminal to take effect"
 fi
 
 exit 0
