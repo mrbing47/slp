@@ -23,17 +23,19 @@ success() {
 	echo -e "${Green}$* ${Color_Off}"
 }
 
-# Storing the timer passed as an argument.
-timer=$1
-
 # Checking if the number of positional parameters ($#) is 0.
 if [[ "$#" -eq 0 ]]; then
 	error "Need an time interval for sleep."
 # Checking if the number of positional parameters ($#) are more than 1.
 elif [[ "$#" -gt 1 ]]; then
 	error "Accepts only 1 argument"
+fi
+
+# Storing the timer passed as an argument.
+timer=$1
+
 # Checking if the $timer is all numbers (int|float).
-elif [[ "$timer" =~ ^[0-9]+(.[0-9]+)?$ ]]; then
+if [[ "$timer" =~ ^[0-9]+(.[0-9]+)?$ ]]; then
 	seconds=$timer
 	unit='seconds'
 # Checking if the $timer has format for units.
