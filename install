@@ -66,6 +66,7 @@ tildify() {
 
 command -v sleep >/dev/null || error "Need to have sleep commend."
 command -v pmset >/dev/null || error "Need to have pmset commend."
+command -v bc >/dev/null || error "Need to have pmset commend."
 
 bin_url=https://raw.githubusercontent.com/mrbing47/slp/main/slp
 
@@ -90,7 +91,7 @@ echo
 success "Successfully installed slp"
 
 echo
-info "Setting up the PATH"
+info "Setting up the \$PATH"
 
 case $(basename "$SHELL") in
 fish)

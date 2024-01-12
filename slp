@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# This command asks for root privileges required for pmset.
-# [ "$UID" -eq 0 ] || exec sudo "$0" "$@"
-
 # Regular Colors
 Red=''
 Green=''
@@ -30,34 +27,34 @@ success() {
 timer=$1
 
 # Checking if the number of positional parameters ($#) is 0.
-if [[ "$#" == 0 ]]; then
+if [[ "$#" -eq 0 ]]; then
 	error "Need an time interval for sleep."
 # Checking if the number of positional parameters ($#) are more than 1.
 elif [[ "$#" -gt 1 ]]; then
 	error "Accepts only 1 argument"
-# Checking if the $timer is all numbers.
-elif [[ "$timer" =~ ^[0-9]+$ ]]; then
-	let seconds=$timer
+# Checking if the $timer is all numbers (int|float).
+elif [[ "$timer" =~ ^[0-9]+(.[0-9]+)?$ ]]; then
+	seconds=$timer
 	unit='seconds'
 # Checking if the $timer has format for units.
-elif [[ "$timer" =~ ^[0-9]+[smh]$ ]]; then
+elif [[ "$timer" =~ ^[0-9]+(.[0-9]+)?[smh]$ ]]; then
 	# Extracting the last character from $timer
 	requnit="${timer:0-1}"
 	# Extracting the string except the last character.
 	timer=${timer%?}
 
 	if [[ "$requnit" == "s" ]]; then
-		let seconds=$timer
+		seconds=$timer
 		unit='seconds'
 	elif [[ "$requnit" == "m" ]]; then
-		let seconds=$timer*60
+		seconds=$(echo "$timer * 60" | bc)
 		unit='minutes'
 	elif [[ "$requnit" == "h" ]]; then
-		let seconds=$timer*3600
+		seconds=$(echo "$timer * 3600" | bc)
 		unit="hours"
 	fi
 else
-	error "Invalid argument, must be a positive integer followed by optional s, m and h for seconds, minutes and hour respectively."
+	error "Invalid argument, must be a positive number followed by optional s, m and h for seconds, minutes and hour respectively."
 fi
 
 success "Sleeping after $timer $unit"
