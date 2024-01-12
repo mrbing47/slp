@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+UPDATE=0
+
+for arg; do
+    case $arg in
+    update)
+        UPDATE=1
+        ;;
+
+    esac
+done
+
 # Color Reset
 Color_Off=''
 
@@ -88,7 +99,11 @@ chmod +x "$bin" ||
     error 'Failed to set permissions on slp executable'
 
 echo
-success "Successfully installed slp"
+success "Successfully $([[ $UPDATE -eq 1 ]] && echo "updated" || echo "installed") slp"
+
+if [[ $UPDATE -eq 1 ]]; then
+    exit 0
+fi
 
 echo
 info "Setting up the \$PATH"

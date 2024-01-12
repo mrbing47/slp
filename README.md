@@ -14,6 +14,14 @@ In order to install, open **terminal** and copy and run the following command:
 curl -fsSL https://raw.githubusercontent.com/mrbing47/slp/main/install | bash
 ```
 
+## Update
+
+In order to update the code to latest version, copy and run the following command:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/mrbing47/slp/main/install | bash -s update
+```
+
 ## Usage
 
 ### Seconds (s)
