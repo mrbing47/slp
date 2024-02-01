@@ -66,18 +66,17 @@ repeat() {
 }
 
 tildify() {
-    if [[ $1 = $HOME/* ]]; then
+    if [[ $1 == $HOME/* ]]; then
         local replacement=\~
-
         echo "${1/$HOME/$replacement}"
     else
         echo "$1"
     fi
 }
 
-command -v sleep >/dev/null || error "Need to have sleep commend."
-command -v pmset >/dev/null || error "Need to have pmset commend."
-command -v bc >/dev/null || error "Need to have pmset commend."
+command -v sleep >/dev/null || error "Unable to find \"sleep\" command."
+command -v pmset >/dev/null || error "Unable to find \"pmset\" command."
+command -v bc >/dev/null || error "Unable to find \"bc\" command."
 
 bin_url=https://raw.githubusercontent.com/mrbing47/slp/main/slp
 
